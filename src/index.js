@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import Home from './components/Home'
 
 // seleciona o elemento no DOM com o id root no DOM e inicializa o react.
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -9,6 +9,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // primeiro componente (garante o strict mode do react)
   <React.StrictMode>
-    <App />
+    {/* Importo o componente Home (principal) */}
+    <Home/>
   </React.StrictMode>
 );

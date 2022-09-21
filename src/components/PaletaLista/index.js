@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import PaletaImg from "../../assets/images/banana-com-nutella.png";
-import { paletas } from "../../mocks/paletas";
+import React, { useState, useEffect } from "react";
+import PaletaItem from "../PaletaItem";
+import { PaletaService } from "services/PaletaService";
 import './styles.css';
 
 const PaletaLista = () => {
-  const [paletasList, setPaletasList] = useState(paletas);
+  const [paletasList, setPaletasList] = useState([]);
   const [paletaSlecionada, setPaletaSelecionada] = useState({})
 
   const adicionarItem = (paletaIndex) => {
@@ -16,31 +16,34 @@ const PaletaLista = () => {
     setPaletaSelecionada({...paletaSlecionada, ...paleta})
     console.log(paletaSlecionada);
   }
-  
-  const badgeCounter = (canRender, index) => {
-    return Boolean(canRender) && (<span className="PaletaListaItem__badge">{paletaSlecionada[index]}</span>);
+
+  const removerItem = (paletaIndex) => {
+    const paleta = {
+      [paletaIndex]: Number(paletaSlecionada[paletaIndex] || 0) - 1
+    }
+    setPaletaSelecionada({...paletaSlecionada, ...paleta})
   }
+  
+  const getLista = async () => {
+    const response = await PaletaService.getLista();
+    setPaletasList(response)
+  }
+
+  useEffect(() => {
+    getLista();
+  }, [])
 
   return (
     <div className="PaletaLista">
       {
         paletasList.map((paleta, index) => (
-          <div className="PaletaListaItem" key={index}>
-            {badgeCounter(paletaSlecionada[index], index)}
-            <div>
-              <h2 className="PaletaListaItem__titulo">{paleta.titulo}</h2>
-              <p className="PaletaListaItem__preco">R${paleta.preco}</p>
-              <p className="PaletaListaItem__descricao">{paleta.descricao}</p>
-              <div className="PaletaListaItem__acoes Acoes">
-                <button className="Acoes__adicionar Acoes__adicionar--preencher"
-                  onClick={() => adicionarItem(index)}
-                >
-                  adicionar
-                </button>
-              </div>
-            </div>
-            <img src={paleta.foto} className="PaletaListaItem__foto" alt={`Paleta de ${paleta.sabor}`} />
-          </div>
+          <PaletaItem key={`PaletaItem-${index}`}
+            paleta={paleta}
+            quantidadeSelecionada={paletaSlecionada[index]}
+            index={index}
+            onRemove={index => removerItem(index)}
+            onAdd={index => adicionarItem(index)}
+          />
         ))
       }
     </div>

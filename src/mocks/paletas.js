@@ -23,7 +23,7 @@ export const paletas = [
     titulo: "Chocolate Belga",
     descricao:
       "Quam vulputate dignissim suspendisse in est ante in nibh mauris.",
-    foto: require("../assets/images/chocolate-belga.png"),
+    foto: require("assets/images/chocolate-belga.png"),
     preco: 7.0,
     sabor: "Chocolate Belga",
     possuiRecheio: false,

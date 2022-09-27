@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import PaletaItem from "../PaletaItem";
 import { PaletaService } from "services/PaletaService";
 import './styles.css';
+import PaletaDetalhesModal from "components/PaletaDetalhesModal";
 
 const PaletaLista = () => {
   const [paletasList, setPaletasList] = useState([]);
   const [paletaSlecionada, setPaletaSelecionada] = useState({})
+  const [paletaModal, setPaletaModal] = useState(false);
 
   const adicionarItem = (paletaIndex) => {
     // se receber o indice adiciona o span no html.
@@ -43,9 +45,12 @@ const PaletaLista = () => {
             index={index}
             onRemove={index => removerItem(index)}
             onAdd={index => adicionarItem(index)}
+            clickItem={(paletaId) => setPaletaModal(paleta)}
           />
-        ))
-      }
+          ))
+        }
+        {paletaModal && <PaletaDetalhesModal paleta={paletaModal} 
+        closeModal={()=> setPaletaModal(false)} />}
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import './style.css';
 
-const PaletaItem = ({ paleta, quantidadeSelecionada, index, onRemove, onAdd }) => {
+const PaletaItem = ({ paleta, quantidadeSelecionada, index, onRemove, onAdd, clickItem }) => {
   const badgeCounter = (canRender, index) => {
     return Boolean(canRender) && (<span className="PaletaListaItem__badge">
       {quantidadeSelecionada}
@@ -9,11 +9,11 @@ const PaletaItem = ({ paleta, quantidadeSelecionada, index, onRemove, onAdd }) =
   }
 
   const removeButton = (canRender, index) => {
-    return Boolean(canRender) && (<button className="Acoes__remover" onClick={() => onRemove(index)}>remover</button>)
+    return Boolean(canRender) && (<button className="Acoes__remover" onClick={(e) => {e.stopPropagation(); onRemove(index)}}>remover</button>)
   }
   
   return (
-    <div className="PaletaListaItem" key={index}>
+    <div className="PaletaListaItem" onClick={() => clickItem(paleta.id)}>
       {badgeCounter(quantidadeSelecionada, index)}
       <div>
         <h2 className="PaletaListaItem__titulo">{paleta.titulo}</h2>
@@ -21,7 +21,7 @@ const PaletaItem = ({ paleta, quantidadeSelecionada, index, onRemove, onAdd }) =
         <p className="PaletaListaItem__descricao">{paleta.descricao}</p>
         <div className="PaletaListaItem__acoes Acoes">
           <button className={`Acoes__adicionar ${!quantidadeSelecionada ? "Acoes__adicionar--preencher" : ""}`}
-            onClick={() => onAdd(index)}
+            onClick={(e) => {e.stopPropagation(); onAdd(index)}}
           >
             adicionar
           </button>

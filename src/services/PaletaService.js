@@ -20,13 +20,23 @@ const parseTransformLista = (response) =>
     return paletas.map(transformPaleta);
   })
 
+
+const parseTransformItem = (response) => parseResponse(response).then(transformPaleta)
+
 export const PaletaService = {
   getLista: () => 
     fetch(Api.paletaLista(), { method: 'GET'}).then(parseTransformLista),
   getById: (id) => 
-    fetch(Api.paletaById(id), { method: 'GET' }).then(parseResponse),
-  create: () => 
-    fetch(Api.createPaleta(), { method: 'POST' }).then(parseResponse),
+    fetch(Api.paletaById(id), { method: 'GET' }).then(parseTransformItem),
+  create: (paleta) => 
+    fetch(Api.createPaleta(), { 
+      method: 'POST',
+      body: JSON.stringify(paleta),
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json"
+      }
+   }).then(parseResponse),
   updateById: (id) => 
     fetch(Api.updatePaletaById(id), { method: 'PUT' }).then(parseResponse),
   deleteById: (id) => 
